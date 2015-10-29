@@ -24,6 +24,7 @@ def timeNow():
 
 
 frame = Tk()
+frame.wm_title("Stopwatch")
 now = StringVar()
 timeStr = StringVar()
 timeStr.set('0 min 0 sec 0 ms')
