@@ -15,8 +15,9 @@ def timerStop():
 
 
 def timerStart():
-    global run, toggle
+    global run, toggle, time_start
     run = True
+    time_start = time.time()
     refreshSwatch()
     startButton.config(text='Stop')
     toggle +=1
@@ -75,13 +76,15 @@ def refreshSwatch():
     global totalTime
     global timerMS
     if run == True:
-        timerMS += 1
-        if timerMS == 999: #1s = 1000ms
-            timerSec += 1
-            timerMS = 0
-            if timerSec == 59:
-                timerMin += 1
-                timerSec = 0
+        time_now = time.time()
+        stopwatch_time = time_now - time_start
+        ms = int(round(stopwatch_time * 1000))
+        timerMS = ms%1000
+        timerSec = int((ms-timerMS)/1000)%60
+        timerMin = int(int(ms-timerMS-(timerSec*1000))/60000)
+
+
+
         stopWatch.after(1, refreshSwatch)
         totalTime = str(timerMin) + " min " + str(timerSec) + " sec " + str(timerMS) + " ms"
         timeStr.set(totalTime)
