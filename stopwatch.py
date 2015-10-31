@@ -76,7 +76,7 @@ def refreshSwatch():
     global timerMS
     if run == True:
         timerMS += 1
-        if timerMS == 99:
+        if timerMS == 999: #1s = 1000ms
             timerSec += 1
             timerMS = 0
             if timerSec == 59:
