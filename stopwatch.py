@@ -47,6 +47,14 @@ timeStr.set('0 min 0 sec 0 ms')
 currentTime = ttk.Label(frame, textvariable=now)
 currentTime.pack()
 currentTime.config(font=('Courier', 25, 'bold'), pad=20, width=35, anchor=CENTER) #fixed some window bug, when the timeStr was longer than the width of windows
+<<<<<<< HEAD
+=======
+
+stopWatch = ttk.Label(frame, textvariable=timeStr)
+stopWatch.config(font=('Courier', 45, 'bold'), pad=20) # Here made the font bigger
+stopWatch.pack()
+
+>>>>>>> origin/master
 
 stopwatchLabel = ttk.Label(frame, text='Stopwatch')
 stopwatchLabel.config(pad=(95, 5))
