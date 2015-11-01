@@ -1,4 +1,4 @@
-__author__ = 'Brian'
+﻿__author__ = 'Brian'
 from tkinter import *
 from tkinter import ttk
 import datetime
@@ -15,15 +15,17 @@ def timerStop():
 
 
 def timerStart():
-    global run, toggle
+    global run, toggle, time_start
     run = True
-    refreshSwatch()
-    startButton.config(text='Stop')
     toggle +=1
     if toggle > 1:
         timerStop()
         startButton.config(text='Start')
         toggle=0
+    time_start = time.time()
+    refreshSwatch()
+    startButton.config(text='Stop')
+
 
 def clear():
     global run, toggle, totalTime, timerMS, timerSec, timerMIn
@@ -32,7 +34,7 @@ def clear():
     timerMS=0
     timerSec=0
     timerMin=0
-    totalTime = str(timerMin) + " min " + str(timerSec) + " sec " + str(timerMS) + " ms"
+    totalTime = str(timerMin) + " min " + str(timerSec).zfill(2) + " sec " + str(timerMS).zfill(2) + " ms"
     timeStr.set(totalTime)
     
 def timeNow():
@@ -43,18 +45,10 @@ frame = Tk()
 frame.wm_title("Stopwatch")
 now = StringVar()
 timeStr = StringVar()
-timeStr.set('0 min 0 sec 0 ms')
+timeStr.set('0 min 00 sec 00 ms')
 currentTime = ttk.Label(frame, textvariable=now)
 currentTime.pack()
 currentTime.config(font=('Courier', 25, 'bold'), pad=20, width=35, anchor=CENTER) #fixed some window bug, when the timeStr was longer than the width of windows
-<<<<<<< HEAD
-=======
-
-stopWatch = ttk.Label(frame, textvariable=timeStr)
-stopWatch.config(font=('Courier', 45, 'bold'), pad=20) # Here made the font bigger
-stopWatch.pack()
-
->>>>>>> origin/master
 
 stopwatchLabel = ttk.Label(frame, text='Stopwatch')
 stopwatchLabel.config(pad=(95, 5))
@@ -73,7 +67,6 @@ stopButton.config(pad=(90, 5))
 
 def refresh():
     now.set(datetime.datetime.now().strftime('%I:%M %p'))
-    print('running')
     currentTime.after(60000, refresh)
 
 
@@ -82,18 +75,16 @@ def refreshSwatch():
     global timerMin
     global totalTime
     global timerMS
-    if run == True:
-        timerMS += 1
-        if timerMS == 99:
-            timerSec += 1
-            timerMS = 0
-            if timerSec == 59:
-                timerMin += 1
-                timerSec = 0
-        stopWatch.after(1, refreshSwatch)
-        totalTime = str(timerMin) + " min " + str(timerSec) + " sec " + str(timerMS) + " ms"
+    if (run):
+        time_now = time.time()
+        stopwatch_time = time_now - time_start
+        ms = int(round(stopwatch_time * 1000))
+        timerMS = ms%1000
+        timerSec = int((ms-timerMS)/1000)%60
+        timerMin = int(int(ms-timerMS-(timerSec*1000))/60000)        
+        totalTime = str(timerMin) + " min " + str(timerSec).zfill(2) + " sec " + str(timerMS).zfill(2) + " ms"
         timeStr.set(totalTime)
-        
+        stopWatch.after(1, refreshSwatch)
 
 
 
