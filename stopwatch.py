@@ -81,7 +81,7 @@ def refreshSwatch():
         ms = int(round(stopwatch_time * 1000))
         timerMS = ms%1000
         timerSec = int((ms-timerMS)/1000)%60
-        timerMin = int(int(ms-timerMS-(timerSec*1000))/60000)        
+        timerMin = int(int(ms-timerMS-(timerSec*1000))/60000)
         totalTime = str(timerMin) + " min " + str(timerSec).zfill(2) + " sec " + str(timerMS).zfill(2) + " ms"
         timeStr.set(totalTime)
         stopWatch.after(1, refreshSwatch)
