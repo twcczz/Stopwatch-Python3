@@ -1,4 +1,4 @@
-__author__ = 'Brian'
+﻿__author__ = 'Brian'
 from tkinter import *
 from tkinter import ttk
 import datetime
@@ -32,7 +32,7 @@ def clear():
     timerMS=0
     timerSec=0
     timerMin=0
-    totalTime = str(timerMin) + " min " + str(timerSec) + " sec " + str(timerMS) + " ms"
+    totalTime = str(timerMin) + " min " + str(timerSec).zfill(2) + " sec " + str(timerMS).zfill(2) + " ms"
     timeStr.set(totalTime)
     
 def timeNow():
@@ -43,18 +43,10 @@ frame = Tk()
 frame.wm_title("Stopwatch")
 now = StringVar()
 timeStr = StringVar()
-timeStr.set('0 min 0 sec 0 ms')
+timeStr.set('0 min 00 sec 00 ms')
 currentTime = ttk.Label(frame, textvariable=now)
 currentTime.pack()
 currentTime.config(font=('Courier', 25, 'bold'), pad=20, width=35, anchor=CENTER) #fixed some window bug, when the timeStr was longer than the width of windows
-<<<<<<< HEAD
-=======
-
-stopWatch = ttk.Label(frame, textvariable=timeStr)
-stopWatch.config(font=('Courier', 45, 'bold'), pad=20) # Here made the font bigger
-stopWatch.pack()
-
->>>>>>> origin/master
 
 stopwatchLabel = ttk.Label(frame, text='Stopwatch')
 stopwatchLabel.config(pad=(95, 5))
@@ -91,7 +83,7 @@ def refreshSwatch():
                 timerMin += 1
                 timerSec = 0
         stopWatch.after(1, refreshSwatch)
-        totalTime = str(timerMin) + " min " + str(timerSec) + " sec " + str(timerMS) + " ms"
+        totalTime = str(timerMin) + " min " + str(timerSec).zfill(2) + " sec " + str(timerMS).zfill(2) + " ms"
         timeStr.set(totalTime)
         
 
