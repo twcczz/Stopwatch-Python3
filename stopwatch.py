@@ -8,6 +8,7 @@ timerSec = 0
 timerMin = 0
 run = None
 toggle = 0
+lapTimeNumber = 1
 def timerStop():
     global  run
     run = False
@@ -34,8 +35,9 @@ def clear():
     timerMS=0
     timerSec=0
     timerMin=0
-    totalTime = str(timerMin) + " min " + str(timerSec).zfill(2) + " sec " + str(timerMS).zfill(2) + " ms"
+    totalTime = str(timerMin) + ":" + str(timerSec).zfill(2) + ":" + str(timerMS).zfill(2) 
     timeStr.set(totalTime)
+    lapOneStr.set("00:00:00")
     
 def timeNow():
     now.set(datetime.datetime.now().strftime('%I:%M %p'))
@@ -58,20 +60,24 @@ def refreshSwatch():
         timerMS = ms%1000
         timerSec = int((ms-timerMS)/1000)%60
         timerMin = int(int(ms-timerMS-(timerSec*1000))/60000)
-        totalTime = str(timerMin) + " min " + str(timerSec).zfill(2) + " sec " + str(timerMS).zfill(2) + " ms"
+        totalTime = str(timerMin) + ":" + str(timerSec).zfill(2) + ":" + str(timerMS).zfill(2)
+        
         timeStr.set(totalTime)
         stopWatch.after(1, refreshSwatch)
 
 def lapTime():
-    global totalTime
-    lapOneStr.set(totalTime)
-
+    global totalTime, lapTimeNumber
+    if lapTimeNumber == 1:
+        lapOneStr.set(totalTime)
+                
 frame = Tk()
 frame.wm_title("Stopwatch")
 now = StringVar()
 timeStr = StringVar()
+timeStr.set("00:00:00")
 lapOneStr = StringVar()
-timeStr.set('0 min 00 sec 00 ms')
+lapTwoStr = StringVar()
+lapOneStr.set('00:00:00')
 currentTime = ttk.Label(frame, textvariable=now)
 currentTime.pack()
 currentTime.config(font=('Courier', 25, 'bold'), pad=20, width=35, anchor=CENTER) #fixed some window bug, when the timeStr was longer than the width of windows
@@ -95,7 +101,10 @@ lapOne.pack()
 lapOneTime = ttk.Label(frame, textvariable=lapOneStr)
 lapOneTime.pack()
 lapOneButton = ttk.Button(frame, text='Lap', command=lapTime)
+lapOneButton.config(pad=(90,5))
 lapOneButton.pack()
+
+
 
 
 
