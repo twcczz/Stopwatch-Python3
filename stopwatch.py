@@ -12,20 +12,20 @@ lapTimeNumber = 1
 def timerStop():
     global  run
     run = False
-
-
+    startButton.config(text='Start')
+    
 
 def timerStart():
     global run, toggle, time_start
     run = True
     toggle +=1
     if toggle > 1:
-        timerStop()
-        startButton.config(text='Start')
         toggle=0
-    time_start = time.time()
-    refreshSwatch()
-    startButton.config(text='Stop')
+        timerStop()
+    else:
+        time_start = time.time()
+        refreshSwatch()
+        startButton.config(text='Stop')
 
 
 def clear():
@@ -38,6 +38,7 @@ def clear():
     totalTime = str(timerMin) + ":" + str(timerSec).zfill(2) + ":" + str(timerMS).zfill(2) 
     timeStr.set(totalTime)
     lapOneStr.set("00:00:00")
+    lapTwoStr.set("00:00:00")
     
 def timeNow():
     now.set(datetime.datetime.now().strftime('%I:%M %p'))
@@ -69,6 +70,18 @@ def lapTime():
     global totalTime, lapTimeNumber
     if lapTimeNumber == 1:
         lapOneStr.set(totalTime)
+        lapTimeNumber += 1
+    elif lapTimeNumber ==2:
+        prevTime = lapOneStr.get().split(":")
+        newTime = totalTime.split(":")
+        diffTime = []
+        i = 0
+        for unit in prevTime:
+            diffTime.append(str(abs(int(newTime[i])-int(unit))))
+            i += 1
+        strDiffTime = ":".join(diffTime)
+        lapTwoStr.set(strDiffTime)
+        
                 
 frame = Tk()
 frame.wm_title("Stopwatch")
@@ -78,6 +91,7 @@ timeStr.set("00:00:00")
 lapOneStr = StringVar()
 lapTwoStr = StringVar()
 lapOneStr.set('00:00:00')
+lapTwoStr.set("00:00:00")
 currentTime = ttk.Label(frame, textvariable=now)
 currentTime.pack()
 currentTime.config(font=('Courier', 25, 'bold'), pad=20, width=35, anchor=CENTER) #fixed some window bug, when the timeStr was longer than the width of windows
@@ -100,10 +114,15 @@ lapOne = ttk.Label(frame, text='Lap 1: ')
 lapOne.pack()
 lapOneTime = ttk.Label(frame, textvariable=lapOneStr)
 lapOneTime.pack()
+lapTwo = ttk.Label(frame, text='Lap 2: ')
+lapTwo.pack()
+lapTwoTime = ttk.Label(frame, textvariable=lapTwoStr)
+lapTwoTime.pack()
+
 lapOneButton = ttk.Button(frame, text='Lap', command=lapTime)
 lapOneButton.config(pad=(90,5))
-lapOneButton.pack()
 
+lapOneButton.pack()
 
 
 
